@@ -1,0 +1,99 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ post.title }} - Django博客{% endblock %}
+
+{% block content %}
+<article class="mb-5">
+    <header class="mb-4">
+        <h1 class="display-5">{{ post.title }}</h1>
+        <div class="text-muted">
+            <small>
+                <i class="bi bi-person"></i> {{ post.author.username }} | 
+                <i class="bi bi-calendar"></i> {{ post.published_at|date:"Y年m月d日 H:i" }} | 
+                <i class="bi bi-eye"></i> {{ post.views }} 次浏览
+                {% if post.category %}
+                    | <i class="bi bi-tag"></i> 
+                    <a href="{% url 'blog:category_posts' post.category.slug %}" class="text-decoration-none">
+                        {{ post.category.name }}
+                    </a>
+                {% endif %}
+            </small>
+        </div>
+    </header>
+    
+    {% if post.featured_image %}
+        <div class="mb-4">
+            <img src="{{ post.featured_image.url }}" class="img-fluid rounded" alt="{{ post.title }}">
+        </div>
+    {% endif %}
+    
+    <div class="post-content">
+        {{ post.content|linebreaks }}
+    </div>
+    
+    <footer class="mt-4 pt-4 border-top">
+        <div class="row">
+            <div class="col-md-6">
+                {% if post.category %}
+                    <span class="badge bg-primary">{{ post.category.name }}</span>
+                {% endif %}
+            </div>
+            <div class="col-md-6 text-end">
+                <a href="{% url 'blog:post_list' %}" class="btn btn-outline-secondary">返回文章列表</a>
+            </div>
+        </div>
+    </footer>
+</article>
+
+<!-- 评论区 -->
+<section class="comments">
+    <h3>评论 ({{ comments.count }})</h3>
+    
+    {% if comments %}
+        {% for comment in comments %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h6 class="card-subtitle mb-2 text-muted">{{ comment.author.username }}</h6>
+                        <small class="text-muted">{{ comment.created_at|date:"Y年m月d日 H:i" }}</small>
+                    </div>
+                    <p class="card-text">{{ comment.content|linebreaks }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-muted">暂无评论，快来发表第一条评论吧！</p>
+    {% endif %}
+    
+    <!-- 添加评论表单 -->
+    {% if user.is_authenticated %}
+        <div class="card comment-form">
+            <div class="card-header">
+                <h5 class="card-title mb-0">发表评论</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{% url 'blog:add_comment' post.id %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="{{ comment_form.content.id_for_label }}" class="form-label">
+                            {{ comment_form.content.label }}
+                        </label>
+                        {{ comment_form.content }}
+                        {% if comment_form.content.errors %}
+                            <div class="text-danger">
+                                {{ comment_form.content.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <button type="submit" class="btn btn-primary">提交评论</button>
+                </form>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <p>请 <a href="{% url 'blog:user_login' %}?next={{ request.path|urlencode }}">登录</a> 后发表评论。</p>
+            <p class="mb-0">还没有账号？<a href="{% url 'blog:user_register' %}" class="alert-link">立即注册</a></p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}管理员登录{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+        <div class="card">
+            <div class="card-header text-center bg-dark text-white">
+                <h4>管理员登录</h4>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i>
+                    <strong>说明：</strong> 这是网站管理后台的登录入口。如果您是普通用户，请使用
+                    <a href="{% url 'blog:user_login' %}">用户登录</a>。
+                </div>
+                
+                <div class="text-center mb-3">
+                    <a href="/admin/login/" class="btn btn-dark btn-lg w-100">
+                        <i class="bi bi-shield-lock"></i> 进入管理后台
+                    </a>
+                </div>
+                
+                <hr>
+                
+                <div class="text-center">
+                    <small class="text-muted">
+                        <strong>管理员登录信息：</strong><br>
+                        用户名: admin<br>
+                        密码: admin123
+                    </small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-3">
+            <a href="{% url 'blog:user_login' %}" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-person"></i> 用户登录
+            </a>
+            <a href="{% url 'blog:user_register' %}" class="btn btn-outline-primary btn-sm">
+                <i class="bi bi-person-plus"></i> 用户注册
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>个人资料</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 text-center">
+                        <div class="mb-3">
+                            <div class="bg-secondary rounded-circle d-inline-flex align-items-center justify-content-center" 
+                                 style="width: 120px; height: 120px;">
+                                <i class="bi bi-person-fill text-white" style="font-size: 3rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <h5>{{ user.get_full_name|default:user.username }}</h5>
+                        <p class="text-muted">{{ user.email }}</p>
+                        <p><strong>用户名:</strong> {{ user.username }}</p>
+                        <p><strong>注册时间:</strong> {{ user.date_joined|date:"Y年m月d日" }}</p>
+                        <p><strong>最后登录:</strong> {{ user.last_login|date:"Y年m月d日 H:i"|default:"从未登录" }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5>我的评论</h5>
+            </div>
+            <div class="card-body">
+                {% with user_comments=user.comment_set.all %}
+                    {% if user_comments %}
+                        <div class="list-group">
+                            {% for comment in user_comments %}
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="mb-1">
+                                            <a href="{% url 'blog:post_detail' comment.post.slug %}" 
+                                               class="text-decoration-none">
+                                                {{ comment.post.title }}
+                                            </a>
+                                        </h6>
+                                        <small class="text-muted">{{ comment.created_at|date:"Y年m月d日" }}</small>
+                                    </div>
+                                    <p class="mb-1">{{ comment.content|truncatewords:20 }}</p>
+                                    <small class="text-muted">
+                                        {% if comment.is_approved %}
+                                            <span class="text-success">✓ 已审核</span>
+                                        {% else %}
+                                            <span class="text-warning">⏳ 待审核</span>
+                                        {% endif %}
+                                    </small>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted">您还没有发表任何评论。</p>
+                        <a href="{% url 'blog:post_list' %}" class="btn btn-primary btn-sm">
+                            去浏览文章
+                        </a>
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h6>快捷操作</h6>
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'blog:post_list' %}" class="list-group-item list-group-item-action">
+                        <i class="bi bi-journal-text"></i> 浏览文章
+                    </a>
+                    <a href="{% url 'blog:search' %}" class="list-group-item list-group-item-action">
+                        <i class="bi bi-search"></i> 搜索文章
+                    </a>
+                    {% if user.is_staff %}
+                        <a href="/admin/" class="list-group-item list-group-item-action">
+                            <i class="bi bi-gear"></i> 管理后台
+                        </a>
+                    {% endif %}
+                    <a href="{% url 'blog:user_logout' %}" class="list-group-item list-group-item-action text-danger">
+                        <i class="bi bi-box-arrow-right"></i> 退出登录
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

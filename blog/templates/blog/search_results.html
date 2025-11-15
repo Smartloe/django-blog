@@ -1,0 +1,147 @@
+{% extends 'blog/base.html' %}
+{% block title %}
+    {% if query %}
+        搜索: {{ query }} - Django博客
+    {% else %}
+        搜索 - Django博客
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <h1>
+            {% if query %}
+                搜索结果: "{{ query }}"
+            {% else %}
+                搜索文章
+            {% endif %}
+        </h1>
+        
+        {% if query %}
+            {% if page_obj %}
+                <p class="text-muted">找到 {{ page_obj.paginator.count }} 个结果</p>
+                
+                {% for post in page_obj %}
+                    <article class="card mb-4">
+                        {% if post.featured_image %}
+                            <img src="{{ post.featured_image.url }}" class="card-img-top" alt="{{ post.title }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h2 class="card-title">
+                                <a href="{% url 'blog:post_detail' post.slug %}" class="text-decoration-none text-dark">
+                                    {{ post.title }}
+                                </a>
+                            </h2>
+                            <div class="text-muted mb-3">
+                                <small>
+                                    <i class="bi bi-person"></i> {{ post.author.username }} | 
+                                    <i class="bi bi-calendar"></i> {{ post.published_at|date:"Y年m月d日" }} | 
+                                    <i class="bi bi-eye"></i> {{ post.views }} 次浏览
+                                    {% if post.category %}
+                                        | <i class="bi bi-tag"></i> 
+                                        <a href="{% url 'blog:category_posts' post.category.slug %}" class="text-decoration-none">
+                                            {{ post.category.name }}
+                                        </a>
+                                    {% endif %}
+                                </small>
+                            </div>
+                            <div class="card-text">
+                                {{ post.excerpt|default:post.content|truncatewords:50 }}
+                            </div>
+                            <div class="mt-3">
+                                <a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-primary">阅读全文</a>
+                            </div>
+                        </div>
+                    </article>
+                {% endfor %}
+                
+                <!-- 分页 -->
+                {% if page_obj.has_other_pages %}
+                    <nav aria-label="搜索结果分页">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?q={{ query }}&page=1">&laquo; 首页</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?q={{ query }}&page={{ page_obj.previous_page_number }}">上一页</a>
+                                </li>
+                            {% endif %}
+                            
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ num }}</span>
+                                    </li>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?q={{ query }}&page={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?q={{ query }}&page={{ page_obj.next_page_number }}">下一页</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?q={{ query }}&page={{ page_obj.paginator.num_pages }}">末页 &raquo;</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            {% else %}
+                <div class="alert alert-warning">
+                    <h4>未找到相关文章</h4>
+                    <p>没有找到包含 "{{ query }}" 的文章，请尝试其他关键词。</p>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="alert alert-info">
+                <h4>搜索文章</h4>
+                <p>请在上方搜索框中输入关键词来搜索文章。</p>
+            </div>
+        {% endif %}
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">文章分类</h5>
+            </div>
+            <div class="card-body">
+                {% if categories_with_count %}
+                    <div class="list-group">
+                        {% for item in categories_with_count %}
+                            <a href="{% url 'blog:category_posts' item.category.slug %}" class="list-group-item list-group-item-action">
+                                {{ item.category.name }}
+                                <span class="badge bg-secondary float-end">
+                                    {{ item.count }}
+                                </span>
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">暂无分类</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="card-title mb-0">搜索提示</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li>• 使用关键词搜索文章标题和内容</li>
+                    <li>• 搜索不区分大小写</li>
+                    <li>• 可以搜索单个或多个词语</li>
+                    <li>• 搜索结果按发布时间排序</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
