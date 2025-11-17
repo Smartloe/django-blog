@@ -8,55 +8,67 @@
 {% endblock %}
 
 {% block content %}
+<div class="card p-4 gradient-border mb-4">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+        <div>
+            <p class="text-muted mb-1">搜索文章</p>
+            <h1 class="fw-bold mb-0">
+                {% if query %}
+                    结果: "{{ query }}"
+                {% else %}
+                    请输入关键词
+                {% endif %}
+            </h1>
+        </div>
+        <form class="d-flex gap-2" method="GET" action="{% url 'blog:search' %}">
+            <input type="search" class="form-control" name="q" placeholder="搜索文章..." value="{{ query|default:'' }}">
+            <button class="btn btn-glow" type="submit"><i class="bi bi-search"></i></button>
+        </form>
+    </div>
+    {% if query %}
+        <p class="text-muted mt-2 mb-0">找到 {{ page_obj.paginator.count|default:0 }} 个结果</p>
+    {% endif %}
+</div>
+
 <div class="row">
     <div class="col-lg-8">
-        <h1>
-            {% if query %}
-                搜索结果: "{{ query }}"
-            {% else %}
-                搜索文章
-            {% endif %}
-        </h1>
-        
         {% if query %}
             {% if page_obj %}
-                <p class="text-muted">找到 {{ page_obj.paginator.count }} 个结果</p>
-                
                 {% for post in page_obj %}
-                    <article class="card mb-4">
+                    <article class="card mb-4 gradient-border">
                         {% if post.featured_image %}
                             <img src="{{ post.featured_image.url }}" class="card-img-top" alt="{{ post.title }}">
                         {% endif %}
                         <div class="card-body">
+                            <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+                                {% if post.category %}
+                                    <a href="{% url 'blog:category_posts' post.category.slug %}" class="badge-soft badge rounded-pill">
+                                        <i class="bi bi-tag"></i> {{ post.category.name }}
+                                    </a>
+                                {% endif %}
+                                <span class="meta"><i class="bi bi-calendar"></i> {{ post.published_at|date:"Y年m月d日" }}</span>
+                                <span class="meta"><i class="bi bi-eye"></i> {{ post.views }} 浏览</span>
+                            </div>
                             <h2 class="card-title">
-                                <a href="{% url 'blog:post_detail' post.slug %}" class="text-decoration-none text-dark">
+                                <a href="{% url 'blog:post_detail' post.slug %}">
                                     {{ post.title }}
                                 </a>
                             </h2>
                             <div class="text-muted mb-3">
                                 <small>
-                                    <i class="bi bi-person"></i> {{ post.author.username }} | 
-                                    <i class="bi bi-calendar"></i> {{ post.published_at|date:"Y年m月d日" }} | 
-                                    <i class="bi bi-eye"></i> {{ post.views }} 次浏览
-                                    {% if post.category %}
-                                        | <i class="bi bi-tag"></i> 
-                                        <a href="{% url 'blog:category_posts' post.category.slug %}" class="text-decoration-none">
-                                            {{ post.category.name }}
-                                        </a>
-                                    {% endif %}
+                                    <i class="bi bi-person"></i> {{ post.author.username }}
                                 </small>
                             </div>
                             <div class="card-text">
                                 {{ post.excerpt|default:post.content|truncatewords:50 }}
                             </div>
                             <div class="mt-3">
-                                <a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-primary">阅读全文</a>
+                                <a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-glow">阅读全文</a>
                             </div>
                         </div>
                     </article>
                 {% endfor %}
                 
-                <!-- 分页 -->
                 {% if page_obj.has_other_pages %}
                     <nav aria-label="搜索结果分页">
                         <ul class="pagination justify-content-center">
