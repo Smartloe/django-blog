@@ -1,19 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
 
 :root {
-  --brand-primary: #4f46e5;
-  --brand-accent: #22c55e;
-  --brand-muted: #94a3b8;
-  --bg-soft: #0f172a;
+  --brand-primary: #00ffd1;
+  --brand-accent: #ff00ff;
+  --brand-secondary: #00b7ff;
+  --brand-dark: #0c1027;
+  --brand-muted: #7ee0c3;
+  --brand-border: #1de9b6;
+  --brand-bg-stripe: rgba(255, 255, 255, 0.05);
 }
 
 * {
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'VT323', 'Press Start 2P', monospace;
+  letter-spacing: 0.4px;
 }
 
 body {
-  background: linear-gradient(135deg, #0f172a 0%, #0b1223 50%, #0f172a 100%);
-  color: #e2e8f0;
+  background: repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.03),
+      rgba(255, 255, 255, 0.03) 2px,
+      transparent 2px,
+      transparent 6px
+    ),
+    linear-gradient(135deg, #0a0f25 0%, #0c122f 50%, #0a0f25 100%);
+  color: #e0fff5;
   min-height: 100vh;
 }
 
@@ -22,34 +33,39 @@ a {
 }
 
 .navbar {
-  backdrop-filter: blur(10px);
-  background: rgba(15, 23, 42, 0.8) !important;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+  backdrop-filter: blur(8px);
+  background: rgba(12, 16, 39, 0.85) !important;
+  border-bottom: 2px solid var(--brand-primary);
+  box-shadow: 0 0 0 2px #1de9b61f, 0 12px 30px rgba(0, 0, 0, 0.45);
 }
 
 .navbar-brand {
+  font-family: 'Press Start 2P', monospace;
   font-weight: 700;
-  letter-spacing: 0.3px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .nav-link {
-  color: #e2e8f0 !important;
+  color: #e0fff5 !important;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .nav-link:hover,
 .nav-link:focus {
-  color: #cbd5f5 !important;
+  color: var(--brand-primary) !important;
 }
 
 .hero {
   position: relative;
   overflow: hidden;
-  background: radial-gradient(circle at 10% 20%, rgba(79, 70, 229, 0.25), transparent 25%),
-    radial-gradient(circle at 90% 10%, rgba(34, 197, 94, 0.25), transparent 25%),
-    #0f172a;
-  border: 1px solid rgba(148, 163, 184, 0.15);
-  border-radius: 24px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  background: linear-gradient(120deg, rgba(0, 255, 209, 0.1), rgba(255, 0, 255, 0.08)),
+    rgba(12, 16, 39, 0.8);
+  border: 2px solid var(--brand-primary);
+  border-radius: 0;
+  box-shadow: 0 0 0 3px rgba(0, 255, 209, 0.15), 0 18px 45px rgba(0, 0, 0, 0.45);
 }
 
 .hero .badge {
@@ -61,38 +77,50 @@ a {
 
 .hero h1 {
   color: #fff;
-  letter-spacing: 0.2px;
+  font-family: 'Press Start 2P', monospace;
+  line-height: 1.6;
+  font-size: 1.4rem;
 }
 
 .hero p.lead {
   color: #cbd5f5;
+  font-size: 1.1rem;
 }
 
 .btn-glow {
   color: #fff;
   background: linear-gradient(135deg, var(--brand-primary), #7c3aed);
-  box-shadow: 0 10px 25px rgba(79, 70, 229, 0.35);
-  border: none;
+  box-shadow: 6px 6px 0 rgba(0, 255, 209, 0.2), 0 0 25px rgba(0, 255, 209, 0.6);
+  border: 2px solid var(--brand-primary);
+  border-radius: 0;
+  text-transform: uppercase;
+  font-family: 'Press Start 2P', monospace;
 }
 
 .btn-glow:hover {
   filter: brightness(1.05);
   color: #fff;
+  box-shadow: 8px 8px 0 rgba(255, 0, 255, 0.25), 0 0 30px rgba(0, 255, 209, 0.7);
 }
 
 .card {
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  border: 2px solid var(--brand-border);
   color: #e2e8f0;
+  border-radius: 0;
+  box-shadow: 6px 6px 0 rgba(0, 255, 209, 0.18);
 }
 
 .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  transform: translate(-1px, -1px);
+  box-shadow: 8px 8px 0 rgba(255, 0, 255, 0.2);
 }
 
 .card-title a {
   color: #e2e8f0;
+  font-family: 'Press Start 2P', monospace;
+  letter-spacing: 0.6px;
+  font-size: 0.95rem;
 }
 
 .card-title a:hover {
@@ -104,48 +132,63 @@ a {
 }
 
 .badge-soft {
-  background: rgba(79, 70, 229, 0.12);
-  color: #cbd5f5;
-  border: 1px solid rgba(79, 70, 229, 0.25);
+  background: rgba(0, 255, 209, 0.08);
+  color: var(--brand-primary);
+  border: 2px solid var(--brand-primary);
+  border-radius: 0;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.9rem;
+  box-shadow: inset 0 0 0 1px rgba(255, 0, 255, 0.2);
 }
 
 .list-group-item {
   background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(148, 163, 184, 0.1);
+  border-color: var(--brand-primary);
   color: #e2e8f0;
+  border-width: 2px;
+  border-radius: 0;
+}
+
+.list-group-item + .list-group-item {
+  margin-top: 6px;
 }
 
 .list-group-item:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(0, 255, 209, 0.05);
 }
 
 .list-group-item.active {
-  background: linear-gradient(135deg, var(--brand-primary), #7c3aed);
-  border-color: transparent;
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+  border-color: var(--brand-primary);
+  box-shadow: 5px 5px 0 rgba(0, 255, 209, 0.2);
 }
 
 .meta {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  background: rgba(148, 163, 184, 0.08);
-  border-radius: 999px;
+  padding: 0.4rem 0.7rem;
+  background: rgba(148, 163, 184, 0.1);
+  border-radius: 0;
   color: #cbd5f5;
+  border: 2px solid var(--brand-primary);
+  font-size: 0.95rem;
 }
 
 .post-content {
   line-height: 1.8;
   color: #e2e8f0;
+  font-size: 1.05rem;
 }
 
 footer {
-  background: rgba(15, 23, 42, 0.8);
-  border-top: 1px solid rgba(148, 163, 184, 0.12);
+  background: rgba(12, 16, 39, 0.9);
+  border-top: 2px solid var(--brand-primary);
 }
 
 .alert {
-  border: 1px solid rgba(148, 163, 184, 0.2);
+  border: 2px solid var(--brand-primary);
+  border-radius: 0;
 }
 
 .form-control,
@@ -153,6 +196,7 @@ footer {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(148, 163, 184, 0.2);
   color: #e2e8f0;
+  border-radius: 0;
 }
 
 .form-control:focus,
@@ -162,12 +206,13 @@ footer {
 }
 
 .btn-outline-light {
-  border-color: rgba(226, 232, 240, 0.4);
+  border-color: var(--brand-primary);
   color: #e2e8f0;
+  border-radius: 0;
 }
 
 .btn-outline-light:hover {
-  background: rgba(226, 232, 240, 0.1);
+  background: rgba(0, 255, 209, 0.1);
   color: #fff;
 }
 

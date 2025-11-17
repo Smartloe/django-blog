@@ -8,7 +8,7 @@
     <header class="mb-4 card p-4 gradient-border">
         <div class="d-flex align-items-center gap-2 mb-3 flex-wrap">
             {% if post.category %}
-                <a href="{% url 'blog:category_posts' post.category.slug %}" class="badge-soft badge rounded-pill">
+                <a href="{% url 'blog:category_posts' post.category.slug %}" class="badge-soft px-2 py-1">
                     <i class="bi bi-tag"></i> {{ post.category.name }}
                 </a>
             {% endif %}

@@ -3,14 +3,42 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-8 col-lg-6">
-        <div class="card">
+<div class="row justify-content-center mb-4">
+    <div class="col-lg-10">
+        <div class="card p-4 gradient-border">
+            <div class="d-flex align-items-center gap-3 flex-wrap">
+            <span class="badge-soft px-3 py-2 me-2">新用户</span>
+            <h1 class="mb-0 fw-bold">注册账号，开始创作与交流</h1>
+                <p class="text-muted mb-0">创建个人空间，收藏与发布文章、参与评论互动。</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center g-4">
+    <div class="col-lg-4">
+        <div class="card h-100 gradient-border">
+            <div class="card-body">
+                <h5 class="card-title mb-3">加入后你可以：</h5>
+                <ul class="list-unstyled text-muted mb-4">
+                    <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>收藏与阅读优质文章</li>
+                    <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>发表评论，参与讨论</li>
+                    <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>发布自己的技术/生活分享</li>
+                </ul>
+                <div class="alert alert-info mb-0">
+                    <i class="bi bi-info-circle me-2"></i>
+                    请使用真实邮箱，便于找回密码与通知提醒。
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card gradient-border">
             <div class="card-header text-center">
-                <h4>用户注册</h4>
+                <h4 class="mb-0">用户注册</h4>
             </div>
             <div class="card-body">
-                <form method="post">
+                <form method="post" novalidate>
                     {% csrf_token %}
                     
                     <div class="row">
@@ -18,7 +46,10 @@
                             <label for="{{ form.username.id_for_label }}" class="form-label">
                                 {{ form.username.label }} <span class="text-danger">*</span>
                             </label>
-                            {{ form.username }}
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent text-muted"><i class="bi bi-person-circle"></i></span>
+                                {{ form.username }}
+                            </div>
                             {% if form.username.errors %}
                                 <div class="text-danger small">
                                     {{ form.username.errors }}
@@ -33,7 +64,10 @@
                             <label for="{{ form.email.id_for_label }}" class="form-label">
                                 {{ form.email.label }} <span class="text-danger">*</span>
                             </label>
-                            {{ form.email }}
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent text-muted"><i class="bi bi-envelope"></i></span>
+                                {{ form.email }}
+                            </div>
                             {% if form.email.errors %}
                                 <div class="text-danger small">
                                     {{ form.email.errors }}
@@ -47,42 +81,13 @@
                     
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="{{ form.first_name.id_for_label }}" class="form-label">
-                                {{ form.first_name.label }} <span class="text-danger">*</span>
-                            </label>
-                            {{ form.first_name }}
-                            {% if form.first_name.errors %}
-                                <div class="text-danger small">
-                                    {{ form.first_name.errors }}
-                                </div>
-                            {% endif %}
-                            {% if form.first_name.help_text %}
-                                <div class="form-text">{{ form.first_name.help_text }}</div>
-                            {% endif %}
-                        </div>
-                        
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.last_name.id_for_label }}" class="form-label">
-                                {{ form.last_name.label }} <span class="text-danger">*</span>
-                            </label>
-                            {{ form.last_name }}
-                            {% if form.last_name.errors %}
-                                <div class="text-danger small">
-                                    {{ form.last_name.errors }}
-                                </div>
-                            {% endif %}
-                            {% if form.last_name.help_text %}
-                                <div class="form-text">{{ form.last_name.help_text }}</div>
-                            {% endif %}
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
                             <label for="{{ form.password1.id_for_label }}" class="form-label">
                                 {{ form.password1.label }} <span class="text-danger">*</span>
                             </label>
-                            {{ form.password1 }}
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent text-muted"><i class="bi bi-lock"></i></span>
+                                {{ form.password1 }}
+                            </div>
                             {% if form.password1.errors %}
                                 <div class="text-danger small">
                                     {{ form.password1.errors }}
@@ -97,7 +102,10 @@
                             <label for="{{ form.password2.id_for_label }}" class="form-label">
                                 {{ form.password2.label }} <span class="text-danger">*</span>
                             </label>
-                            {{ form.password2 }}
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent text-muted"><i class="bi bi-shield-lock"></i></span>
+                                {{ form.password2 }}
+                            </div>
                             {% if form.password2.errors %}
                                 <div class="text-danger small">
                                     {{ form.password2.errors }}
@@ -110,7 +118,7 @@
                     </div>
                     
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary">注册</button>
+                        <button type="submit" class="btn btn-glow btn-lg">立即注册</button>
                     </div>
                 </form>
             </div>

@@ -2,28 +2,27 @@
 {% block title %}首页 - Django博客{% endblock %}
 
 {% block content %}
-<div class="hero p-5 mb-5 gradient-border">
-    <div class="row align-items-center">
-        <div class="col-lg-8">
-            <span class="badge mb-3">用 Django 记录每一次灵感</span>
-            <h1 class="display-5 fw-bold mb-3">欢迎来到 Django 博客</h1>
-            <p class="lead mb-4">分享技术心得、生活感悟与学习笔记，在这里发现更多高质量文章和创作者。</p>
-            <div class="d-flex gap-3 flex-wrap">
-                <a class="btn btn-glow btn-lg" href="{% url 'blog:post_list' %}">
-                    <i class="bi bi-journal-text me-2"></i>浏览所有文章
+<div class="hero p-4 mb-4 gradient-border">
+    <div class="row gy-3 align-items-center">
+        <div class="col-lg-9">
+            <span class="badge-soft px-3 py-2 me-2">像素世界</span>
+            <h1 class="fw-bold mb-3">欢迎来到复古像素博客</h1>
+            <p class="lead mb-3">探索像素艺术、复古游戏与程序创作的灵感空间。</p>
+            <div class="d-flex gap-2 flex-wrap">
+                <a class="btn btn-glow btn-sm" href="{% url 'blog:post_list' %}">
+                    <i class="bi bi-journal-text me-2"></i>所有文章
                 </a>
-                <a class="btn btn-outline-light btn-lg" href="{% url 'blog:user_register' %}">立即加入</a>
+                <a class="btn btn-outline-light btn-sm" href="{% url 'blog:user_register' %}">立即加入</a>
             </div>
         </div>
-        <div class="col-lg-4 d-none d-lg-block text-end">
-            <div class="card p-4">
-                <div class="section-title mb-3">热门分类</div>
+        <div class="col-lg-3 d-none d-lg-block text-end">
+            <div class="card p-3">
+                <div class="section-title mb-2">热门分类</div>
                 {% if categories_with_count %}
-                    <div class="d-flex flex-wrap gap-2">
-                        {% for item in categories_with_count|slice:":6" %}
-                            <a href="{% url 'blog:category_posts' item.category.slug %}" class="category-chip">
-                                <i class="bi bi-hash"></i>{{ item.category.name }}
-                                <span class="badge bg-primary-subtle text-light">{{ item.count }}</span>
+                    <div class="d-flex flex-column gap-2">
+                        {% for item in categories_with_count|slice:":4" %}
+                            <a href="{% url 'blog:category_posts' item.category.slug %}" class="btn btn-outline-light btn-sm text-start">
+                                # {{ item.category.name }} ({{ item.count }})
                             </a>
                         {% endfor %}
                     </div>
@@ -43,28 +42,23 @@
                 {% for post in latest_posts %}
                     <div class="col-12">
                         <div class="card h-100">
-                            {% if post.featured_image %}
-                                <img src="{{ post.featured_image.url }}" class="card-img-top" alt="{{ post.title }}">
-                            {% endif %}
                             <div class="card-body">
-                                <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
-                                    {% if post.category %}
-                                        <a href="{% url 'blog:category_posts' post.category.slug %}" class="badge-soft badge rounded-pill">
-                                            <i class="bi bi-tag"></i> {{ post.category.name }}
-                                        </a>
-                                    {% endif %}
-                                    <span class="meta"><i class="bi bi-eye"></i> {{ post.views }} 浏览</span>
-                                    <span class="meta"><i class="bi bi-calendar"></i> {{ post.published_at|date:"Y年m月d日" }}</span>
+                                <div class="d-flex align-items-center justify-content-between flex-wrap mb-2">
+                                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                                        {% if post.category %}
+                                            <span class="badge-soft px-2 py-1"><i class="bi bi-hash"></i> {{ post.category.name }}</span>
+                                        {% endif %}
+                                        <span class="meta"><i class="bi bi-calendar"></i> {{ post.published_at|date:"Y-m-d" }}</span>
+                                        <span class="meta"><i class="bi bi-eye"></i> {{ post.views }}</span>
+                                    </div>
+                                    <span class="text-muted small"><i class="bi bi-person"></i> {{ post.author.username }}</span>
                                 </div>
                                 <h4 class="card-title mb-2">
                                     <a href="{% url 'blog:post_detail' post.slug %}">{{ post.title }}</a>
                                 </h4>
-                                <p class="text-muted mb-3">
-                                    <i class="bi bi-person"></i> {{ post.author.username }}
-                                </p>
                                 <p class="card-text text-light">{{ post.excerpt|default:post.content|truncatewords:30 }}</p>
-                                <a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-glow mt-2">
-                                    阅读全文
+                                <a href="{% url 'blog:post_detail' post.slug %}" class="btn btn-outline-light btn-sm mt-2">
+                                    阅读更多 →
                                 </a>
                             </div>
                         </div>
